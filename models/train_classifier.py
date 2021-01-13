@@ -2,6 +2,19 @@ import sys
 
 
 def load_data(database_filepath):
+    # read in file
+
+
+    # clean data
+
+
+    # load to database
+
+
+    # define features and label arrays
+
+
+    #return X, y
     pass
 
 
@@ -10,7 +23,29 @@ def tokenize(text):
 
 
 def build_model():
+    # text processing and model pipeline
+
+
+    # define parameters for GridSearchCV
+
+
+    # create gridsearch object and return as final model pipeline
+
+
+    #return model_pipeline
     pass
+
+#def train(X, y, model):
+    # train test split
+
+
+    # fit model
+
+
+    # output model test results
+
+
+    #return model
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
