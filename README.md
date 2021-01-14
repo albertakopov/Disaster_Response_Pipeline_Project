@@ -1,3 +1,9 @@
+### Disaster Response Pipeline Project
+### Software & Libaries
+### Data
+The provided dataset are from Figure Eight and consits of:
+* Data
+
 ### Instructions:
 1. Run the following commands in the project's root directory to set up your database and model.
 
