@@ -22,7 +22,7 @@ from sklearn.multioutput import MultiOutputClassifier
 
 def load_data(database_filepath):
     # load data from database
-    engine = create_engine('sqlite:///DisasterResponse.db')
+    engine = create_engine('sqlite:///../data/DisasterResponse.db')
 
     # load to database
     df = pd.read_sql_table('DisasterResponse' ,engine) 
@@ -53,7 +53,7 @@ def tokenize(text):
 
 
     # lemmatize, normalize case, and remove leading/trailing white space    
-    clean_tok = [lemmatizer.lemmatize(w).lower().strip() for w in tokens]
+    clean_tokens = [lemmatizer.lemmatize(w).lower().strip() for w in tokens]
 
     return clean_tokens
 
@@ -74,23 +74,21 @@ def build_model():
 
     # define parameters for GridSearchCV
     parameters = {
-#        'features__text_pipeline__vect__ngram_range': ((1, 1), (1, 2)),
+        'features__text_pipeline__vect__ngram_range': ((1, 1), (1, 2)),
 #        'features__text_pipeline__vect__max_df': (0.5, 0.75, 1.0),
 #        'features__text_pipeline__vect__max_features': (None, 5000, 10000),
 #        'features__text_pipeline__tfidf__use_idf': (True, False),
-        'clf__n_estimators': [50, 100, 200],
-        'clf__min_samples_split': [2, 3, 4],
     }
 
     # create gridsearch object and return as final model pipeline
-    model_pipeline = GridSearchCV(estimatoe=pipeline, param_grid=parameters, scoring=f1_micro)
+    model_pipeline = GridSearchCV(estimator=pipeline, param_grid=parameters)
 
 
     return model_pipeline
 
 
 
-def evaluate_model(model, X_test, Y_test, y_pred, category_names):
+def evaluate_model(model, X_test, Y_test, category_names):
     
     #Determine predicted values
     y_pred = model.predict(X_test)
@@ -103,16 +101,15 @@ def evaluate_model(model, X_test, Y_test, y_pred, category_names):
         print("\nBest Parameters:", model.best_params_)
 
 
-def save_model(model, model_filepath):
+def save_model(model):
     # save the model to disk
-    filename = 'finalized_model.sav'
-    pickle.dump(model, open(filename, 'wb'))
+    pickle.dump(model, open('model.pkl', 'wb'))
     
 
 
 def main():
     if len(sys.argv) == 3:
-        database_filepath, model_filepath = sys.argv[1:]
+        database_filepath, model_filepath = sys.argv[1:]#['../data/DisasterResponse.db','../model/model.pkl']
         print('Loading data...\n    DATABASE: {}'.format(database_filepath))
         X, Y, category_names = load_data(database_filepath)
         X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2)
@@ -124,10 +121,10 @@ def main():
         model.fit(X_train, Y_train)
         
         print('Evaluating model...')
-        evaluate_model(model, X_test, Y_test, y_pred, category_names)
+        evaluate_model(model, X_test, Y_test, category_names)
 
         print('Saving model...\n    MODEL: {}'.format(model_filepath))
-        save_model(model, model_filepath)
+        save_model(model)
 
         print('Trained model saved!')
 

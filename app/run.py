@@ -26,11 +26,11 @@ def tokenize(text):
     return clean_tokens
 
 # load data
-engine = create_engine('sqlite:///../data/YourDatabaseName.db')
-df = pd.read_sql_table('YourTableName', engine)
+engine = create_engine('sqlite:///../data/DisasterResponse.db')
+df = pd.read_sql_table('DisasterResponse', engine)
 
 # load model
-model = joblib.load("../models/your_model_name.pkl")
+model = joblib.load('../models/model.pkl')
 
 
 # index webpage displays cool visuals and receives user input text for model
@@ -42,6 +42,8 @@ def index():
     # TODO: Below is an example - modify to extract data for your own visuals
     genre_counts = df.groupby('genre').count()['message']
     genre_names = list(genre_counts.index)
+    category_names = df.iloc[:,4:].columns
+    category_bool = (df.iloc[:,4:] != 0).sum().values
     
     # create visuals
     # TODO: Below is an example - modify to create your own visuals
@@ -63,9 +65,30 @@ def index():
                     'title': "Genre"
                 }
             }
+        },
+        # GRAPH n.2
+        {
+            'data': [
+                Bar(
+                    x= category_names,
+                    y= category_bool
+                )
+            ],
+            'layout': {
+                'title': 'Distribution of Categories across Messages',
+                'yaxis':{
+                    'title':"Count"
+                }, 
+                'xaxis': {
+                    'title':"Categories"
+                    
+                
+                    
+                }
+            }
         }
     ]
-    
+     
     # encode plotly graphs in JSON
     ids = ["graph-{}".format(i) for i, _ in enumerate(graphs)]
     graphJSON = json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
@@ -83,7 +106,7 @@ def go():
     # use model to predict classification for query
     classification_labels = model.predict([query])[0]
     classification_results = dict(zip(df.columns[4:], classification_labels))
-
+    print(classification_labels)
     # This will render the go.html Please see that file. 
     return render_template(
         'go.html',

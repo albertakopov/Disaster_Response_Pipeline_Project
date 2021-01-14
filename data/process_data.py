@@ -47,15 +47,15 @@ def clean_data(df):
 
 
 def save_data(df, database_filename):
-    engine = create_engine('sqlite:///database_filename.db')
-    return df.to_sql('database_filename', engine, index=False)
+    engine = create_engine('sqlite:///DisasterResponse.db')
+    df.to_sql('DisasterResponse', engine, index=False, if_exists='replace')
       
 
 
 def main():
     if len(sys.argv) == 4:
         
-        messages_filepath, categories_filepath, database_filepath = sys.argv[1:]
+        messages_filepath, categories_filepath, database_filepath =sys.argv[1:]#['disaster_messages.csv','disaster_categories.csv','DisasterResponse.db']
         
         print('Loading data...\n    MESSAGES: {}\n    CATEGORIES: {}'
               .format(messages_filepath, categories_filepath))
@@ -69,7 +69,7 @@ def main():
         
         print('Cleaned data saved to database!')
     
-    else:
+   else:
         print('Please provide the filepaths of the messages and categories '\
               'datasets as the first and second argument respectively, as '\
               'well as the filepath of the database to save the cleaned data '\
