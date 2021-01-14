@@ -1,10 +1,10 @@
 ### Disaster Response Pipeline Project
 
-* **Data Processing:
+* **Data Processing**:
 
-* **Machine Learning Pipeline:
+* **Machine Learning Pipeline**:
 
-* **Web Application:
+* **Web Application**:
 
 ### Software & Libaries
 
