@@ -1,8 +1,25 @@
 ### Disaster Response Pipeline Project
+
+* Data Processing:
+
+* Machine Learning Pipeline:
+
+* Web Application:
+
 ### Software & Libaries
+
+The following python packages are used:
+* Pandas
+* Numpy
+* scikit-learn
+* sqlalchemy
+* nltk
+
 ### Data
+
 The provided dataset are from Figure Eight and consits of:
-* Data
+* Disaster_messages.csv     :disaster response messages from different languages  
+* Disaster_categories.csv   :disaster messages categories
 
 ### Instructions:
 1. Run the following commands in the project's root directory to set up your database and model.
