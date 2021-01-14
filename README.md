@@ -3,11 +3,11 @@ In this project, all the data engineering skills I have learned are applied to a
 
 The project is made off three sections:
 
-* **Data Processing**:
+* **Data Processing**: an ETL (Extract, Transform and Load) pipeline is created to process all the messages and categories from the provided CSV files. The dataframe is cleaned and prepared for the ML pipeline. Finally, it is load into a SQLite database so it can be used in the next ML step
 
-* **Machine Learning Pipeline**:
+* **Machine Learning Pipeline**: splits the data into training and testing data. Feeding the data through a ML pipeline using nltk, GridSearchCV to create a supervised model. Finally, the predicted messages are classified for the 36 categaries in a MultiOutputClassifier
 
-* **Web Application**:
+* **Web Application**: will display visualizations of the classified data
 
 ### Software & Libaries
 
