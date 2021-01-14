@@ -69,15 +69,12 @@ def build_model():
         ])),
     ])),
 
-    ('clf', MultiOutputClassifier(RandomForestClassifier()))
+    ('clf', MultiOutputClassifier(AdaBoostClassifier()))
     ])
 
     # define parameters for GridSearchCV
     parameters = {
-        'features__text_pipeline__vect__ngram_range': ((1, 1), (1, 2)),
-#        'features__text_pipeline__vect__max_df': (0.5, 0.75, 1.0),
-#        'features__text_pipeline__vect__max_features': (None, 5000, 10000),
-#        'features__text_pipeline__tfidf__use_idf': (True, False),
+    'clf__estimator__learning_rate':[0.01],
     }
 
     # create gridsearch object and return as final model pipeline
@@ -88,17 +85,14 @@ def build_model():
 
 
 
-def evaluate_model(model, X_test, Y_test, category_names):
+def evaluate_model(model, X_test, y_test, category_names):
     
     #Determine predicted values
     y_pred = model.predict(X_test)
     
     #Calculate the accuracy, precision, and recall of the tuned model
-    for i in range(len(category_names)):
-        print('Category: {} '.format(category_names[i]))
-        print(classification_report(Y_test.iloc[:, i].values, y_pred[:, i]))
-        print('Accuracy {}\n\n'.format(accuracy_score(Y_test.iloc[:, i].values, y_pred[:, i])))
-        print("\nBest Parameters:", model.best_params_)
+    print(classification_report(y_test.iloc[:, 1:].values, np.array([x[1:] for x in y_pred]), target_names = category_names))
+    print("\nBest Parameters:", model.best_params_)
 
 
 def save_model(model):
@@ -108,8 +102,8 @@ def save_model(model):
 
 
 def main():
-    if len(sys.argv) == 3:
-        database_filepath, model_filepath = sys.argv[1:]#['../data/DisasterResponse.db','../model/model.pkl']
+    #if len(sys.argv) == 3:
+        database_filepath, model_filepath = ['DisasterResponse.db','model.pkl']#sys.argv[1:]
         print('Loading data...\n    DATABASE: {}'.format(database_filepath))
         X, Y, category_names = load_data(database_filepath)
         X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2)
@@ -128,7 +122,7 @@ def main():
 
         print('Trained model saved!')
 
-    else:
+    #else:
         print('Please provide the filepath of the disaster messages database '\
               'as the first argument and the filepath of the pickle file to '\
               'save the model to as the second argument. \n\nExample: python '\
